@@ -1,0 +1,45 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        form {
+            width: 300px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            display: block;
+            margin: 0 auto;
+        }
+        .error {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            background-color: #f00;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de inicio de sesión</h1>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <br />
+    <form action="{{ authenticateUrl }}" method="post" autocomplete="off">
+        <label for="email">Correo electrónico</label>
+        <input type="text" name="email" id="email" value="{{ email }}" autocomplete="off"><br />
+        <label for="password">Contraseña</label>
+        <input type="password" name="password" id="password"><br />
+        <input type="submit" value="Iniciar sesión">
+    </form>
+{% endblock %}
