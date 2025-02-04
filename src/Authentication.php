@@ -2,6 +2,8 @@
 
 namespace App;
 
+use PDO;
+
 final class Authentication
 {
     final public static function init(): void
@@ -79,7 +81,8 @@ final class Authentication
         $smtp->execute(params: $parameters);
 
         if ($smtp->rowCount()) {
-            $user = $smtp->fetch(mode: PDO::FETCH_ASSOC);
+
+            $user = $smtp->fetch(PDO::FETCH_ASSOC);
 
             if (password_verify(password: $password, hash: $user['password'])) {
                 $_SESSION['user'] = [
@@ -95,9 +98,22 @@ final class Authentication
         redirect(path: '?action=form');
     }
 
-    final public static function secret(): void {}
+    final public static function secret(): void {
+        if (! is_logged_in()) {
+            redirect('?action=form');
+        }
 
-    final public static function logout(): void {}
+        Twig::render(
+            'secret',
+        [
+            'logoutUrl' => '?action=logout',
+        ]);
+    }
+
+    final public static function logout(): void {
+        session_destroy();
+        redirect(path:'?action=form');
+    }
 
     final public static function notFound(): void
     {
