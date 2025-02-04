@@ -13,13 +13,15 @@ final class Connection
     {
         try {
             if(!self::$connection){
-                SELF::$connection = new PDO(
-                     $_ENV['BD_DSN'],
+                self::$connection = new PDO(
+                    $_ENV['DB_DSN'],
                      $_ENV['DB_USERNAME'],
                     $_ENV['DB_PASSWORD']
                 );
             }
         } catch (PDOException $e) {
+ 
+            echo $e->getMessage();
             echo match($e -> getCode()){
                 1049 => 'Base de datos no encontrada',
                 1045 => 'Acceso denegado',
